@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     #region Variables
     public float speed;
+    public int maxHealth;
 
+
+    public Image[] hearts;
+
+    int currentHealth;
     Animator anim;
     #endregion Variables
 
@@ -14,12 +20,25 @@ public class Player : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+
+        currentHealth = maxHealth;
+
+        GetHealth();
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerMovement();
+
+        if (Input.GetKeyUp(KeyCode.P))
+        {
+            currentHealth--;
+            Debug.Log("pressing P");
+        }
+
+        GetHealth();
+
     }
 
 
@@ -56,5 +75,17 @@ public class Player : MonoBehaviour
         // if no key is pressed anim parameter direction is 0
         else
             anim.speed = 0;
+    }
+
+    void GetHealth()
+    {
+        for(int i = 0; i <= hearts.Length - 1; i++)
+        {
+            hearts[i].gameObject.SetActive(false);
+        }
+        for(int i =0; i<=currentHealth - 1; i++)
+        {
+            hearts[i].gameObject.SetActive(true);
+        }
     }
 }
