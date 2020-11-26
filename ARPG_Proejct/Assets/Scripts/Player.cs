@@ -7,10 +7,12 @@ public class Player : MonoBehaviour
 {
     #region Variables
     public float speed;
+    public float thrustPower;
     public int maxHealth;
 
-
+    public GameObject sword;
     public Image[] hearts;
+    public bool canMove;
 
     int currentHealth;
     Animator anim;
@@ -24,6 +26,8 @@ public class Player : MonoBehaviour
         currentHealth = maxHealth;
 
         GetHealth();
+
+        canMove = true;
     }
 
     // Update is called once per frame
@@ -44,6 +48,9 @@ public class Player : MonoBehaviour
 
     void PlayerMovement()
     {
+        if (!canMove)
+            return;
+        #region Player_Movement_Direction
         if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(0, speed * Time.deltaTime, 0);
@@ -75,6 +82,12 @@ public class Player : MonoBehaviour
         // if no key is pressed anim parameter direction is 0
         else
             anim.speed = 0;
+        #endregion
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            PlayerAttack();
+        }
     }
 
     void GetHealth()
@@ -87,5 +100,44 @@ public class Player : MonoBehaviour
         {
             hearts[i].gameObject.SetActive(true);
         }
+    }
+
+    void PlayerAttack()
+    {
+        canMove = false;
+        GameObject newSword = Instantiate(sword, transform.position, 
+            sword.transform.rotation);
+
+
+
+        #region Sword_Direction
+
+        int swordDir = anim.GetInteger("dir");
+        if (swordDir == 0)
+        {
+            newSword.transform.Rotate(0, 0, 0);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.up * thrustPower * Time.deltaTime);
+        }
+
+        else if (swordDir == 1)
+        {
+            newSword.transform.Rotate(0, 0, 180);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.down * thrustPower * Time.deltaTime);
+        }
+
+        else if (swordDir == 2)
+        {
+            newSword.transform.Rotate(0, 0, 90);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.left * thrustPower * Time.deltaTime);
+        }
+
+        else if (swordDir == 3)
+        {
+            newSword.transform.Rotate(0, 0, -90);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.right * thrustPower * Time.deltaTime);
+        }
+
+
+        #endregion Sword_Diretion
     }
 }
