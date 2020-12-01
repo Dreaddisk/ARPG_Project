@@ -580,7 +580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   thrustPower: 40000
-  maxHealth: 5
+  maxHealth: 2
   sword: {fileID: 1712445059336664, guid: fa7dee5177016934e96623f559845304, type: 2}
   hearts:
   - {fileID: 1518551087}
@@ -589,6 +589,7 @@ MonoBehaviour:
   - {fileID: 1281005722}
   - {fileID: 1028791001}
   canMove: 0
+  canAttack: 0
 --- !u!95 &1225347181
 Animator:
   serializedVersion: 3

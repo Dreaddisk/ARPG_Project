@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public GameObject sword;
     public Image[] hearts;
     public bool canMove;
+    public bool canAttack;
 
     int currentHealth;
     Animator anim;
@@ -28,6 +29,9 @@ public class Player : MonoBehaviour
         GetHealth();
 
         canMove = true;
+
+        canAttack = true;
+
     }
 
     // Update is called once per frame
@@ -104,15 +108,28 @@ public class Player : MonoBehaviour
 
     void PlayerAttack()
     {
+
+        if(!canAttack)
+        {
+            return;
+        }
         canMove = false;
+        canAttack = false;
         GameObject newSword = Instantiate(sword, transform.position, 
             sword.transform.rotation);
+
+        if(currentHealth == maxHealth)
+        {
+            newSword.GetComponent<Sword>().special = true;
+            canMove = true;
+        }
 
 
 
         #region Sword_Direction
 
         int swordDir = anim.GetInteger("dir");
+        anim.SetInteger("attackDir", swordDir);
         if (swordDir == 0)
         {
             newSword.transform.Rotate(0, 0, 0);
